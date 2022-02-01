@@ -32,6 +32,22 @@ KeyboardInputManager.prototype.emit = function (event, data) {
 };
 
 KeyboardInputManager.prototype.listen = function () {
+  const socket = io();
+
+  socket.on("connect", () => console.log('connected'));
+
+  socket.on("move", direction => this.emit("move", direction));
+
+  socket.on("restart", () => this.emit("restart"));
+
+
+  socket.on("continue", () => this.emit("keepPlaying"));
+
+  window.onbeforeunload = () => socket.disconnect();
+
+  socket.emit("hands_free_data", {message: "This will be handsfree data"});
+
+
   var self = this;
 
   var map = {
